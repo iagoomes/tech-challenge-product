@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Product Management API
+  title: Product Management
   description: API for managing products with CRUD operations.
   version: 1.0.0
 tags:
@@ -127,28 +127,8 @@ components:
           type: number
           description: price of the product.
         stockQuantity:
-          type: string
-          description: stock quantity of the product.
-      required:
-        - name
-        - description
-        - price
-        - stockQuantity
-
-    ProductRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: name of the product.
-        description:
-          type: string
-          description: description of the product.
-        price:
-          type: number
-          description: price of the product.
-        stockQuantity:
-          type: string
+          type: integer
+          format: int64
           description: stock quantity of the product.
       required:
         - name
@@ -188,7 +168,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ProductRequest'
+            $ref: '#/components/schemas/Product'
 
   responses:
     ProductCsvUploadResponse:
