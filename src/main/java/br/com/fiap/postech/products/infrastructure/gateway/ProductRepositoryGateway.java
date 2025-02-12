@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface ProductRepositoryGateway {
     Optional<List<Product>> saveAll(List<Product> product);
+    Product save(Product product);
+    Optional<Product> findById(Long id);
+    boolean existsById(Long id);
 }

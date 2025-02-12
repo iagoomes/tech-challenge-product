@@ -14,7 +14,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class ProductRepositoryGatewayImpl implements ProductRepositoryGateway {
-
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
@@ -24,4 +23,23 @@ public class ProductRepositoryGatewayImpl implements ProductRepositoryGateway {
         var entities = productRepository.saveAll(productEntities);
         return Optional.of(entities.stream().map(productMapper::toModel).toList());
     }
+
+    @Override
+    public Product save(Product product) {
+        ProductEntity productEntity = productMapper.toEntity(product);
+        ProductEntity entity = productRepository.save(productEntity);
+        return productMapper.toModel(entity);
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        ProductEntity entity = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return Optional.of(productMapper.toModel(entity));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return productRepository.existsById(id);
+    }
+
 }

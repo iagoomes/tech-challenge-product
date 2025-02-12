@@ -84,11 +84,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>5.9</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -128,7 +123,7 @@
                                 <returnResponse>true</returnResponse>
                                 <additionalModelTypeAnnotations>
                                     @SuppressWarnings({"hiding", "static-method", "unused"})
-                                    @lombok.AllArgsConstructor
+<!--                                    @lombok.AllArgsConstructor-->
                                     @lombok.NoArgsConstructor
                                     @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
                                 </additionalModelTypeAnnotations>

@@ -6,6 +6,7 @@ info:
 tags:
   - name: "Product Management"
     description: "Endpoints for managing products."
+
 paths:
   /products:
     get:
@@ -19,6 +20,74 @@ paths:
           $ref: '#/components/responses/ProductListResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createProduct
+      tags:
+        - Product Management
+      summary: Create a new product
+      description: Adds a new product to the system.
+      requestBody:
+        $ref: '#/components/requestBodies/ProductRequestBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/ProductCreatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /products/{id}:
+    get:
+      operationId: getProductById
+      tags:
+        - Product Management
+      summary: Retrieve a product by ID
+      description: Fetches product details by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      operationId: updateProductById
+      tags:
+        - Product Management
+      summary: Update a product by ID
+      description: Updates an existing product with new details.
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      requestBody:
+        $ref: '#/components/requestBodies/ProductRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductUpdatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteProductById
+      tags:
+        - Product Management
+      summary: Delete a product by ID
+      description: Removes a product from the system.
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '204':
+          description: Product successfully deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /product-uploads:
     post:
       operationId: uploadProductCsv
       tags:
@@ -44,59 +113,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /products/{id}:
-    get:
-      operationId: getProductById
-      tags:
-        - Product Management
-      summary: Retrieve a product by ID
-      description: Fetches product details by its unique identifier.
-      parameters:
-        - $ref: '#/components/parameters/ProductId'
-      responses:
-        '200':
-          $ref: '#/components/responses/ProductResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-
-    put:
-      operationId: updateProductById
-      tags:
-        - Product Management
-      summary: Update a product by ID
-      description: Updates an existing product with new details.
-      parameters:
-        - $ref: '#/components/parameters/ProductId'
-      requestBody:
-        $ref: '#/components/requestBodies/ProductRequestBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/ProductUpdatedResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-
-    delete:
-      operationId: deleteProductById
-      tags:
-        - Product Management
-      summary: Delete a product by ID
-      description: Removes a product from the system.
-      parameters:
-        - $ref: '#/components/parameters/ProductId'
-      responses:
-        '204':
-          description: Product successfully deleted.
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-
 components:
   parameters:
     ProductId:
@@ -109,7 +125,7 @@ components:
         format: int64
 
   schemas:
-    Product:
+    ProductApiModel:
       type: object
       properties:
         id:
@@ -119,17 +135,17 @@ components:
           readOnly: true
         name:
           type: string
-          description: name of the product.
+          description: Name of the product.
         description:
           type: string
-          description: description of the product.
+          description: Description of the product.
         price:
           type: number
-          description: price of the product.
+          description: Price of the product.
         stockQuantity:
           type: integer
-          format: int64
-          description: stock quantity of the product.
+          format: int32
+          description: Stock quantity of the product.
       required:
         - name
         - description
@@ -168,7 +184,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Product'
+            $ref: '#/components/schemas/ProductApiModel'
 
   responses:
     ProductCsvUploadResponse:
@@ -177,7 +193,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductCsvUploadResponse'
-
     ProductListResponse:
       description: A list of products.
       content:
@@ -185,43 +200,37 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/Product'
-
+              $ref: '#/components/schemas/ProductApiModel'
     ProductResponse:
       description: Product details.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Product'
-
+            $ref: '#/components/schemas/ProductApiModel'
     ProductCreatedResponse:
       description: Product successfully created.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Product'
-
+            $ref: '#/components/schemas/ProductApiModel'
     ProductUpdatedResponse:
       description: Product successfully updated.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Product'
-
+            $ref: '#/components/schemas/ProductApiModel'
     BadRequest:
       description: Invalid request payload.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-
     NotFound:
       description: Product not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-
     InternalServerError:
       description: Internal server error.
       content:

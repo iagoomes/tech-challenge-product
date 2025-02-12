@@ -1,6 +1,6 @@
 package br.com.fiap.postech.products.application.gateway.impl;
 
-import br.com.fiap.postech.products.application.gateway.ProductGateway;
+import br.com.fiap.postech.products.application.gateway.UploadArchiveGateway;
 import br.com.fiap.postech.products.infrastructure.gateway.ProductRepositoryGateway;
 import br.com.fiap.postech.products.domain.entity.Product;
 import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProductGatewayImpl implements ProductGateway {
+public class UploadArchiveGatewayImpl implements UploadArchiveGateway {
 
     private final ProductRepositoryGateway productRepositoryGateway;
 
@@ -26,9 +26,15 @@ public class ProductGatewayImpl implements ProductGateway {
         List<Product> products = readProductsFromCsv(file);
         Optional<List<Product>> optionalProducts = productRepositoryGateway.saveAll(products);
         if (optionalProducts.isEmpty()) {
-            return new ProductCsvUploadResponse("Failed to create products", 0);
+            ProductCsvUploadResponse productCsvUploadResponse = new ProductCsvUploadResponse();
+            productCsvUploadResponse.setMessage("Failed to create products");
+            productCsvUploadResponse.setCreatedCount(0);
+            return productCsvUploadResponse;
         }
-        return new ProductCsvUploadResponse("Products successfully created", products.size());
+        ProductCsvUploadResponse productCsvUploadResponse = new ProductCsvUploadResponse();
+        productCsvUploadResponse.setMessage("Products created successfully");
+        productCsvUploadResponse.setCreatedCount(optionalProducts.get().size());
+        return productCsvUploadResponse;
     }
 
     private List<Product> readProductsFromCsv(MultipartFile file) {
@@ -43,7 +49,7 @@ public class ProductGatewayImpl implements ProductGateway {
                 String description = data[2];
                 BigDecimal price = new BigDecimal(data[3]);
                 int stockQuantity = Integer.parseInt(data[4]);
-                Product product = new Product(name, description, price, stockQuantity);
+                Product product = new Product(null, name, description, price, stockQuantity);
                 products.add(product);
             }
         } catch (Exception e) {
