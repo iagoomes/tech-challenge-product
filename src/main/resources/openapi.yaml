@@ -136,16 +136,20 @@ components:
         name:
           type: string
           description: Name of the product.
+          minLength: 1
         description:
           type: string
           description: Description of the product.
+          minLength: 1
         price:
           type: number
           description: Price of the product.
+          minimum: 0.01
         stockQuantity:
           type: integer
           format: int32
           description: Stock quantity of the product.
+          minimum: 1
       required:
         - name
         - description

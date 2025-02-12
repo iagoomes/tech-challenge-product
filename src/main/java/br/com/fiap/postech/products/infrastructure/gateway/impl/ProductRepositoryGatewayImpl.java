@@ -32,14 +32,27 @@ public class ProductRepositoryGatewayImpl implements ProductRepositoryGateway {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
+    public Product findById(Long id) {
         ProductEntity entity = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        return Optional.of(productMapper.toModel(entity));
+        return productMapper.toModel(entity);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll().stream().map(productMapper::toModel).toList();
     }
 
     @Override
     public boolean existsById(Long id) {
-        return productRepository.existsById(id);
+        if (!productRepository.existsById(id)) {
+            throw new RuntimeException("Product not found");
+        }
+        return true;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
     }
 
 }

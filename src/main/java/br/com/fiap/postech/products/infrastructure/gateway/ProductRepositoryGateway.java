@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface ProductRepositoryGateway {
     Optional<List<Product>> saveAll(List<Product> product);
     Product save(Product product);
-    Optional<Product> findById(Long id);
+    Product findById(Long id);
+    List<Product> findAll();
     boolean existsById(Long id);
+    void deleteById(Long id);
 }

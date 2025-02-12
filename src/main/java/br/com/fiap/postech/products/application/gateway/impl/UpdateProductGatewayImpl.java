@@ -1,6 +1,7 @@
 package br.com.fiap.postech.products.application.gateway.impl;
 
 import br.com.fiap.postech.products.application.gateway.UpdateProductGateway;
+import br.com.fiap.postech.products.domain.entity.Product;
 import br.com.fiap.postech.products.infrastructure.gateway.ProductRepositoryGateway;
 import br.com.fiap.postech.products.infrastructure.mapper.ProductMapper;
 import br.com.fiap.postech.products.model.ProductApiModel;
@@ -15,6 +16,10 @@ public class UpdateProductGatewayImpl implements UpdateProductGateway {
 
     @Override
     public ProductApiModel updateProduct(Long id, ProductApiModel dto) {
-        return null;
+        Product product = productRepository.findById(id);
+        product.updateName(dto.getName());
+        product.updateDescription(dto.getDescription());
+        product.updatePrice(dto.getPrice());
+        return productMapper.modelToDTO(productRepository.save(product));
     }
 }

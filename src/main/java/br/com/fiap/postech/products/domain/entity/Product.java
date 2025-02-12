@@ -40,4 +40,32 @@ public class Product {
     public Integer getStockQuantity() {
         return stockQuantity;
     }
+
+    public void updateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty.");
+        }
+        this.name = name;
+    }
+
+    public void updateDescription(String description) {
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty.");
+        }
+        this.description = description;
+    }
+
+    public void updatePrice(BigDecimal price) {
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Price must be positive.");
+        }
+        this.price = price;
+    }
+
+    public void updateStockQuantity(Integer stockQuantity) {
+        if (stockQuantity == null || stockQuantity < 0) {
+            throw new IllegalArgumentException("Stock quantity cannot be negative.");
+        }
+        this.stockQuantity = stockQuantity;
+    }
 }

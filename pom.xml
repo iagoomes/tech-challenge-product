@@ -47,13 +47,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -123,7 +116,7 @@
                                 <returnResponse>true</returnResponse>
                                 <additionalModelTypeAnnotations>
                                     @SuppressWarnings({"hiding", "static-method", "unused"})
-<!--                                    @lombok.AllArgsConstructor-->
+                                    <!--                                    @lombok.AllArgsConstructor-->
                                     @lombok.NoArgsConstructor
                                     @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
                                 </additionalModelTypeAnnotations>
