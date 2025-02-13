@@ -136,11 +136,11 @@ components:
         name:
           type: string
           description: Name of the product.
-          minLength: 1
+          pattern: ".+"
         description:
           type: string
           description: Description of the product.
-          minLength: 1
+          pattern: ".+"
         price:
           type: number
           description: Price of the product.

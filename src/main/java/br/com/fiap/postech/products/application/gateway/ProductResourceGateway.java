@@ -8,13 +8,12 @@ import br.com.fiap.postech.products.application.usecase.GetAllProductsUseCase;
 import br.com.fiap.postech.products.application.usecase.GetProductByIdUseCase;
 import br.com.fiap.postech.products.application.usecase.UpdateProductUseCase;
 import br.com.fiap.postech.products.application.usecase.UploadProductCsvUseCase;
-import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
 import br.com.fiap.postech.products.model.ProductApiModel;
+import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
 
 @Component
 @RequiredArgsConstructor
-@Validated
 public class ProductResourceGateway implements ProductManagementApiDelegate {
 
     private final UploadProductCsvUseCase uploadProductCsvUseCase;
@@ -51,7 +49,7 @@ public class ProductResourceGateway implements ProductManagementApiDelegate {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<ProductApiModel>> updateProductById(Long id, ProductApiModel ProductApiModel) {
+    public CompletableFuture<ResponseEntity<ProductApiModel>> updateProductById(Long id, @Valid ProductApiModel ProductApiModel) {
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(updateProductUseCase.execute(id, ProductApiModel)));
     }
 

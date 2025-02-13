@@ -15,7 +15,12 @@ public class ProductMapper {
     }
 
     public Product DTOToModel(ProductApiModel dto) {
-        return new Product(null, dto.getName(), dto.getDescription(), dto.getPrice(), dto.getStockQuantity());
+        Product product = new Product();
+        product.updateName(dto.getName());
+        product.updateDescription(dto.getDescription());
+        product.updatePrice(dto.getPrice());
+        product.updateStockQuantity(dto.getStockQuantity());
+        return product;
     }
 
     public ProductApiModel modelToDTO(Product product) {

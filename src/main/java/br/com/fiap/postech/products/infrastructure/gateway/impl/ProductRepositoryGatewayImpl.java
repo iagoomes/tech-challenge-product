@@ -1,6 +1,7 @@
 package br.com.fiap.postech.products.infrastructure.gateway.impl;
 
 import br.com.fiap.postech.products.domain.entity.Product;
+import br.com.fiap.postech.products.exception.ProductNotFoundException;
 import br.com.fiap.postech.products.infrastructure.persistence.ProductEntity;
 import br.com.fiap.postech.products.infrastructure.gateway.ProductRepositoryGateway;
 import br.com.fiap.postech.products.infrastructure.mapper.ProductMapper;
@@ -33,7 +34,7 @@ public class ProductRepositoryGatewayImpl implements ProductRepositoryGateway {
 
     @Override
     public Product findById(Long id) {
-        ProductEntity entity = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        ProductEntity entity = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
         return productMapper.toModel(entity);
     }
 
