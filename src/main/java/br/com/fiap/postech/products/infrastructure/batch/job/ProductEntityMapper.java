@@ -1,4 +1,4 @@
-package br.com.fiap.postech.products.config;
+package br.com.fiap.postech.products.infrastructure.batch.job;
 
 import br.com.fiap.postech.products.infrastructure.persistence.ProductEntity;
 import io.micrometer.common.lang.NonNull;
