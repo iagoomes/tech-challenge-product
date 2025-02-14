@@ -25,7 +25,7 @@ public class ProductBatchGatewayImpl implements ProductBatchGateway {
             jobLauncher.run(job, jobParameters);
 
             ProductCsvUploadResponse response = new ProductCsvUploadResponse();
-            response.setMessage("Job started");
+            response.setMessage("Job finished");
             return response;
         } catch (Exception e) {
             log.error(e.getMessage(), e);

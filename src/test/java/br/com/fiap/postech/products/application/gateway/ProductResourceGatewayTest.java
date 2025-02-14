@@ -7,11 +7,15 @@ import br.com.fiap.postech.products.application.usecase.GetAllProductsUseCase;
 import br.com.fiap.postech.products.application.usecase.GetProductByIdUseCase;
 import br.com.fiap.postech.products.application.usecase.ProductBatchUploaderUseCase;
 import br.com.fiap.postech.products.application.usecase.UpdateProductUseCase;
+import br.com.fiap.postech.products.domain.entity.LoadProduct;
 import br.com.fiap.postech.products.model.ProductApiModel;
+import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -91,14 +95,30 @@ class ProductResourceGatewayTest {
         assertEquals(ResponseEntity.ok(product), response.join());
     }
 
-//    @Test
-//    void uploadProductCsv_ReturnsUploadResponse() {
-//        MultipartFile file = mock(MultipartFile.class);
-//        ProductCsvUploadResponse response = new ProductCsvUploadResponse();
-//        when(productBatchUploaderUseCase.execute(file)).thenReturn(response);
-//
-//        CompletableFuture<ResponseEntity<ProductCsvUploadResponse>> result = productResourceGateway.uploadProductCsv(file);
-//
-//        assertEquals(ResponseEntity.ok(response), result.join());
-//    }
+    @Test
+    void uploadProductCsv_shouldReturnOkResponse_whenFileIsUploadedSuccessfully() throws Exception {
+        MultipartFile file = mock(MultipartFile.class);
+        byte[] fileContent = "file content".getBytes();
+        when(file.getBytes()).thenReturn(fileContent);
+
+        LoadProduct loadProduct = new LoadProduct(fileContent);
+        ProductCsvUploadResponse response = new ProductCsvUploadResponse();
+        when(productBatchUploaderUseCase.execute(any(LoadProduct.class))).thenReturn(response);
+
+        CompletableFuture<ResponseEntity<ProductCsvUploadResponse>> result = productResourceGateway.uploadProductCsv(file);
+
+        assertEquals(ResponseEntity.ok().body(response), result.join());
+        verify(productBatchUploaderUseCase).execute(any(LoadProduct.class));
+    }
+
+    @Test
+    void uploadProductCsv_shouldReturnBadRequest_whenIOExceptionOccurs() throws Exception {
+        MultipartFile file = mock(MultipartFile.class);
+        when(file.getBytes()).thenThrow(new IOException("Failed to read file"));
+
+        CompletableFuture<ResponseEntity<ProductCsvUploadResponse>> result = productResourceGateway.uploadProductCsv(file);
+
+        assertEquals(ResponseEntity.badRequest().build(), result.join());
+        verify(productBatchUploaderUseCase, never()).execute(any(LoadProduct.class));
+    }
 }

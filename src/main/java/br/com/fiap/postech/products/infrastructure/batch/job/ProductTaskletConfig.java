@@ -24,23 +24,31 @@ public class ProductTaskletConfig {
             File sourceFolder = new File(directory);
             File destinationFolder = new File(directory + "/processed");
 
-            if (!destinationFolder.exists()) {
-                destinationFolder.mkdirs();
+            if (!sourceFolder.exists() || !sourceFolder.isDirectory()) {
+                log.warn("Source directory '{}' does not exist or is not a directory.", directory);
+                return RepeatStatus.FINISHED;
+            }
+
+            if (!destinationFolder.exists() && !destinationFolder.mkdirs()) {
+                log.error("Failed to create destination directory '{}'.", destinationFolder.getAbsolutePath());
+                return RepeatStatus.FINISHED;
             }
 
             File[] files = sourceFolder.listFiles((dir, name) -> name.endsWith(".csv"));
+            if (files == null || files.length == 0) {
+                log.info("No CSV files found in '{}'.", directory);
+                return RepeatStatus.FINISHED;
+            }
 
-            if (files != null) {
-                for (File file : files) {
-                    File destinationFile = new File(destinationFolder, file.getName());
-                    if (file.renameTo(destinationFile)) {
-                        log.info("File moved: {}", file.getName());
-                    } else {
-                        log.warn("Could not move file: {}", file.getName());
-                        throw new RuntimeException("Could not move file: " + file.getName());
-                    }
+            for (File file : files) {
+                File destinationFile = new File(destinationFolder, file.getName());
+                if (file.renameTo(destinationFile)) {
+                    log.info("File '{}' moved to '{}'.", file.getName(), destinationFolder.getAbsolutePath());
+                } else {
+                    log.error("Could not move file '{}'.", file.getName());
                 }
             }
+
             return RepeatStatus.FINISHED;
         };
     }
