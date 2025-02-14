@@ -164,6 +164,7 @@ components:
           description: Success message.
         createdCount:
           type: integer
+          format: int64
           description: Number of products created.
 
     ErrorResponse:
