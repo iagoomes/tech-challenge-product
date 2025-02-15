@@ -122,10 +122,11 @@ A aplicação estará disponível em http://localhost:8080.
 
 ## Execução do Job Batch
 
-**POST** _/batch/start_
-- **Descrição**: Inicia o processamento do arquivo CSV e insere os dados no banco de dados.
-- **200 OK**: Job iniciado com sucesso.
-- **500 Internal Server Error**: Erro ao iniciar o job.
+**POST** _/product-uploads_
+- **Descrição**: Adiciona novos produtos ao sistema a partir de um arquivo CSV.
+- **201 Created**: Produtos criados com sucesso.
+- **400 Bad Request**: Arquivo inválido.
+- **500 Internal Server Error**: Erro interno do servidor.
 
 ## Documentação OpenAPI
 A documentação da API pode ser acessada em:
