@@ -29,11 +29,6 @@ public class ProductTaskletConfig {
                 return RepeatStatus.FINISHED;
             }
 
-            if (!destinationFolder.exists() && !destinationFolder.mkdirs()) {
-                log.error("Failed to create destination directory '{}'.", destinationFolder.getAbsolutePath());
-                return RepeatStatus.FINISHED;
-            }
-
             File[] files = sourceFolder.listFiles((dir, name) -> name.endsWith(".csv"));
             if (files == null || files.length == 0) {
                 log.info("No CSV files found in '{}'.", directory);
