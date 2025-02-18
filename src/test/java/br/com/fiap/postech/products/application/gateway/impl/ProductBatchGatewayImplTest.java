@@ -20,7 +20,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductBatchGatewayImplTest {
+class ProductBatchGatewayImplTest {
 
     @Mock
     private JobLauncher jobLauncher;
@@ -34,12 +34,12 @@ public class ProductBatchGatewayImplTest {
     private LoadProduct loadProduct;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         loadProduct = new LoadProduct(new byte[]{1, 2, 3}); // Sample binary data
     }
 
     @Test
-    public void testStartBatchJob_Success() throws Exception {
+    void testStartBatchJob_Success() throws Exception {
         // Call the method under test
         ProductCsvUploadResponse response = productBatchGateway.startBatchJob(loadProduct);
 
@@ -51,14 +51,12 @@ public class ProductBatchGatewayImplTest {
     }
 
     @Test
-    public void testStartBatchJob_Exception() throws Exception {
+    void testStartBatchJob_Exception() throws Exception {
         // Simulate an exception thrown by the jobLauncher
         doThrow(new RuntimeException("Failed to run job")).when(jobLauncher).run(any(Job.class), any(JobParameters.class));
 
         // Verify that a JobProcessingException is thrown
-        JobProcessingException exception = assertThrows(JobProcessingException.class, () -> {
-            productBatchGateway.startBatchJob(loadProduct);
-        });
+        JobProcessingException exception = assertThrows(JobProcessingException.class, () -> productBatchGateway.startBatchJob(loadProduct));
 
         // Check the exception message
         assertEquals("Error processing job", exception.getMessage());

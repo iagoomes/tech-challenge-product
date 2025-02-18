@@ -63,7 +63,9 @@ class ProductTest {
     @Test
     void updatePrice_NegativePrice_ThrowsInvalidAttributeException() {
         Product product = new Product();
-        assertThrows(InvalidAttributeException.class, () -> product.updatePrice(BigDecimal.valueOf(-1.00)));
+        BigDecimal negativePrice = BigDecimal.valueOf(-1.00);
+
+        assertThrows(InvalidAttributeException.class, () -> product.updatePrice(negativePrice));
     }
 
     @Test

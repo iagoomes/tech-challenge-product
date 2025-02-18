@@ -16,7 +16,7 @@ public class CreateProductGatewayImpl implements CreateProductGateway {
 
     @Override
     public ProductApiModel createProduct(ProductApiModel dto) {
-        return productMapper.modelToDTO(productRepositoryGateway.save(productMapper.DTOToModel(dto)));
+        return productMapper.modelToDTO(productRepositoryGateway.save(productMapper.dtoToModel(dto)));
     }
 
 }

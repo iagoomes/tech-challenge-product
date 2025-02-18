@@ -20,7 +20,7 @@ public class ProductWriterConfig {
     public ItemWriter<ProductEntity> writer() {
         return new JdbcBatchItemWriterBuilder<ProductEntity>()
                 .dataSource(dataSource)
-                .sql("INSERT INTO TB_PRODUCT (NAME, DESCRIPTION, PRICE, STOCKQUANTITY) VALUES (:name, :description, :price, :stockQuantity)")
+                .sql("INSERT INTO TB_PRODUCT (NAME, DESCRIPTION, PRICE, STOCK_QUANTITY) VALUES (:name, :description, :price, :stockQuantity)")
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
                 .build();
     }

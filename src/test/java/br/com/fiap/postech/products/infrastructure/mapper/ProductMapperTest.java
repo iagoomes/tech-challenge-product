@@ -47,7 +47,7 @@ class ProductMapperTest {
         dto.setPrice(BigDecimal.valueOf(100.00));
         dto.setStockQuantity(10);
 
-        Product product = productMapper.DTOToModel(dto);
+        Product product = productMapper.dtoToModel(dto);
 
         assertNotNull(product);
         assertEquals(dto.getName(), product.getName());

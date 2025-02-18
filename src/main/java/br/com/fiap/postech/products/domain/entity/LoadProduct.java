@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class LoadProduct {
-    private final String name = "products.csv";
+    public static final String NAME = "products.csv";
     private final byte[] binary;
     private final LocalDateTime timestamp;
 

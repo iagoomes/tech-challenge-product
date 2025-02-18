@@ -21,7 +21,7 @@ public class ProductFileGatewayImpl implements ProductFileGateway {
     @Override
     public void saveFile(LoadProduct loadProduct) {
         try {
-            Path filePath = Paths.get(directory, loadProduct.getName());
+            Path filePath = Paths.get(directory, LoadProduct.NAME);
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, loadProduct.getBinary());
         } catch (Exception e) {

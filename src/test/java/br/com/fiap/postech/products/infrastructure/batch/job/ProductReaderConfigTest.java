@@ -21,17 +21,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ProductReaderConfig.class)
 @TestPropertySource(properties = "upload.directory=src/test/resources")
-public class ProductReaderConfigTest {
+class ProductReaderConfigTest {
 
     @Autowired
     private ProductReaderConfig productReaderConfig;
 
     @BeforeEach
-    public void setup() throws Exception {
+    void setup() throws Exception {
         // Criar um arquivo CSV de exemplo para testes
-        String data = "name,description,price,stockQuantity\n"   // Cabeçalhos
-                + "Product1,Description1,25.50,10\n"        // Linha 1
-                + "Product2,Description2,13.40,5\n";        // Linha 2
+        String data = """
+                name,description,price,stockQuantity
+                Product1,Description1,25.50,10
+                Product2,Description2,13.40,5
+                """;
 
         FileSystemResource resource = new FileSystemResource("src/test/resources/products.csv");
         FileWriter writer = new FileWriter(resource.getFile());
@@ -40,7 +42,7 @@ public class ProductReaderConfigTest {
     }
 
     @Test
-    public void testReader() throws Exception {
+    void testReader() throws Exception {
         ItemReader<ProductEntity> reader = productReaderConfig.reader();
 
         // Criar contexto de execução para o reader
