@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
+        <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.fiap.postech</groupId>
@@ -39,12 +39,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -62,11 +59,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>0.2.1</version>
@@ -74,12 +66,20 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.1.0</version>
+            <version>2.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>5.9</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-infrastructure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -120,7 +120,8 @@
                                 <returnResponse>true</returnResponse>
                                 <additionalModelTypeAnnotations>
                                     @SuppressWarnings({"hiding", "static-method", "unused"})
-                                    @lombok.Data
+                                    <!--                                    @lombok.AllArgsConstructor-->
+                                    @lombok.NoArgsConstructor
                                     @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
                                 </additionalModelTypeAnnotations>
                             </configOptions>
@@ -145,23 +146,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.34</version>
-                        </path>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>1.6.2</version>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
