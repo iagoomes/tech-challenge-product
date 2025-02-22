@@ -12,6 +12,7 @@ import br.com.fiap.postech.products.domain.entity.LoadProduct;
 import br.com.fiap.postech.products.model.ProductApiModel;
 import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
 import br.com.fiap.postech.products.model.UpdateProductStockRequest;
+import br.com.fiap.postech.products.model.UpdateProductStockRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

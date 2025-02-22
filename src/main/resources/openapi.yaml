@@ -87,6 +87,32 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /product-uploads:
+    post:
+      operationId: uploadProductCsv
+      tags:
+        - Product Management
+      summary: Upload a CSV file to create products
+      description: Adds new products to the system from a CSV file.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The CSV file containing product data.
+      responses:
+        '201':
+          $ref: '#/components/responses/ProductCsvUploadResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /products/update-stock:
     patch:
       operationId: updateProductStock
