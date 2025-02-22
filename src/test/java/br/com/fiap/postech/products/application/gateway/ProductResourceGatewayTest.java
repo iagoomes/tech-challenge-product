@@ -6,10 +6,12 @@ import br.com.fiap.postech.products.application.usecase.DeleteProductByIdUseCase
 import br.com.fiap.postech.products.application.usecase.GetAllProductsUseCase;
 import br.com.fiap.postech.products.application.usecase.GetProductByIdUseCase;
 import br.com.fiap.postech.products.application.usecase.ProductBatchUploaderUseCase;
+import br.com.fiap.postech.products.application.usecase.UpdateProductStockUseCase;
 import br.com.fiap.postech.products.application.usecase.UpdateProductUseCase;
 import br.com.fiap.postech.products.domain.entity.LoadProduct;
 import br.com.fiap.postech.products.model.ProductApiModel;
 import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
+import br.com.fiap.postech.products.model.UpdateProductStockRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,7 @@ class ProductResourceGatewayTest {
     private GetProductByIdUseCase getProductByIdUseCase;
     private GetAllProductsUseCase getAllProductsUseCase;
     private DeleteProductByIdUseCase deleteProductByIdUseCase;
+    private UpdateProductStockUseCase updateProductStockUseCase;
 
     @BeforeEach
     void setUp() {
@@ -40,7 +43,8 @@ class ProductResourceGatewayTest {
         getProductByIdUseCase = mock(GetProductByIdUseCase.class);
         getAllProductsUseCase = mock(GetAllProductsUseCase.class);
         deleteProductByIdUseCase = mock(DeleteProductByIdUseCase.class);
-        productResourceGateway = new ProductResourceGateway(productBatchUploaderUseCase, createProductUseCase, updateProductUseCase, getProductByIdUseCase, getAllProductsUseCase, deleteProductByIdUseCase);
+        updateProductStockUseCase = mock(UpdateProductStockUseCase.class);
+        productResourceGateway = new ProductResourceGateway(productBatchUploaderUseCase, createProductUseCase, updateProductUseCase, getProductByIdUseCase, getAllProductsUseCase, deleteProductByIdUseCase, updateProductStockUseCase);
     }
 
     @Test
@@ -101,7 +105,6 @@ class ProductResourceGatewayTest {
         byte[] fileContent = "file content".getBytes();
         when(file.getBytes()).thenReturn(fileContent);
 
-        LoadProduct loadProduct = new LoadProduct(fileContent);
         ProductCsvUploadResponse response = new ProductCsvUploadResponse();
         when(productBatchUploaderUseCase.execute(any(LoadProduct.class))).thenReturn(response);
 
@@ -121,4 +124,16 @@ class ProductResourceGatewayTest {
         assertEquals(ResponseEntity.badRequest().build(), result.join());
         verify(productBatchUploaderUseCase, never()).execute(any(LoadProduct.class));
     }
+
+    @Test
+    void updateProductStock_ReturnsOk() {
+        List<UpdateProductStockRequest> request = List.of(new UpdateProductStockRequest(1L, 10));
+        doNothing().when(updateProductStockUseCase).execute(request);
+
+        CompletableFuture<ResponseEntity<Void>> response = productResourceGateway.updateProductStock(request);
+
+        assertEquals(ResponseEntity.ok().build(), response.join());
+        verify(updateProductStockUseCase).execute(request);
+    }
+
 }

@@ -46,7 +46,7 @@ public class ProductRepositoryGatewayImpl implements ProductRepositoryGateway {
     @Override
     public boolean existsById(Long id) {
         if (!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found");
+            throw new ProductNotFoundException("Product not found");
         }
         return true;
     }

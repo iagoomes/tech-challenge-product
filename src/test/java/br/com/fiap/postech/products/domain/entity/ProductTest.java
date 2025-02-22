@@ -86,4 +86,17 @@ class ProductTest {
         Product product = new Product();
         assertThrows(InvalidAttributeException.class, () -> product.updateStockQuantity(-1));
     }
+
+    @Test
+    void substractStock_ValidQuantity_SubtractsStock() {
+        Product product = new Product(1L, "Product", "Description", BigDecimal.valueOf(100.00), 10);
+        product.substractStock(5);
+        assertEquals(5, product.getStockQuantity());
+    }
+
+    @Test
+    void substractStock_QuantityGreaterThanStock_ThrowsInvalidAttributeException() {
+        Product product = new Product(1L, "Product", "Description", BigDecimal.valueOf(100.00), 5);
+        assertThrows(InvalidAttributeException.class, () -> product.substractStock(10));
+    }
 }

@@ -6,10 +6,13 @@ import br.com.fiap.postech.products.application.usecase.DeleteProductByIdUseCase
 import br.com.fiap.postech.products.application.usecase.GetAllProductsUseCase;
 import br.com.fiap.postech.products.application.usecase.GetProductByIdUseCase;
 import br.com.fiap.postech.products.application.usecase.ProductBatchUploaderUseCase;
+import br.com.fiap.postech.products.application.usecase.UpdateProductStockUseCase;
 import br.com.fiap.postech.products.application.usecase.UpdateProductUseCase;
 import br.com.fiap.postech.products.domain.entity.LoadProduct;
 import br.com.fiap.postech.products.model.ProductApiModel;
 import br.com.fiap.postech.products.model.ProductCsvUploadResponse;
+import br.com.fiap.postech.products.model.UpdateProductStockRequest;
+import br.com.fiap.postech.products.model.UpdateProductStockRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,7 @@ public class ProductResourceGateway implements ProductManagementApiDelegate {
     private final GetProductByIdUseCase getProductByIdUseCase;
     private final GetAllProductsUseCase getAllProductsUseCase;
     private final DeleteProductByIdUseCase deleteProductByIdUseCase;
+    private final UpdateProductStockUseCase updateProductStockUseCase;
 
     @Override
     public CompletableFuture<ResponseEntity<Void>> deleteProductById(Long id) {
@@ -52,13 +56,21 @@ public class ProductResourceGateway implements ProductManagementApiDelegate {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<ProductApiModel>> updateProductById(Long id, @Valid ProductApiModel ProductApiModel) {
-        return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(updateProductUseCase.execute(id, ProductApiModel)));
+    public CompletableFuture<ResponseEntity<ProductApiModel>> updateProductById(Long id, @Valid ProductApiModel productApiModel) {
+        return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(updateProductUseCase.execute(id, productApiModel)));
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<ProductApiModel>> createProduct(@Valid ProductApiModel ProductApiModel) {
-        return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(createProductUseCase.execute(ProductApiModel)));
+    public CompletableFuture<ResponseEntity<ProductApiModel>> createProduct(@Valid ProductApiModel productApiModel) {
+        return CompletableFuture.supplyAsync(() -> ResponseEntity.ok(createProductUseCase.execute(productApiModel)));
+    }
+
+    @Override
+    public CompletableFuture<ResponseEntity<Void>> updateProductStock(List<@Valid UpdateProductStockRequest> updateProductStockRequest) {
+        return CompletableFuture.supplyAsync(() -> {
+            updateProductStockUseCase.execute(updateProductStockRequest);
+            return ResponseEntity.ok().build();
+        });
     }
 
     @Override

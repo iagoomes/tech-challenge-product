@@ -1,6 +1,8 @@
 package br.com.fiap.postech.products.domain.entity;
 
 import br.com.fiap.postech.products.exception.InvalidAttributeException;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
@@ -71,5 +73,12 @@ public class Product {
             throw new InvalidAttributeException("Stock quantity cannot be negative.");
         }
         this.stockQuantity = stockQuantity;
+    }
+
+    public void substractStock(@NotNull @Min(1) Integer quantity) {
+        if (quantity > stockQuantity) {
+            throw new InvalidAttributeException("Stock quantity cannot be negative.");
+        }
+        stockQuantity -= quantity;
     }
 }
