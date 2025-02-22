@@ -87,6 +87,31 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /products/update-stock:
+    patch:
+      operationId: updateProductStock
+      tags:
+        - Product Management
+      summary: Update stock quantities for multiple products
+      description: Updates the stock quantities for a list of products.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UpdateProductStockRequest'
+      responses:
+        '200':
+          description: Stock quantities successfully updated.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /product-uploads:
     post:
       operationId: uploadProductCsv
@@ -166,6 +191,22 @@ components:
           type: integer
           format: int64
           description: Number of products created.
+
+    UpdateProductStockRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          description: ID of the product.
+          minimum: 1
+          format: int64
+        quantity:
+          type: integer
+          description: Quantity to update the stock by.
+          minimum: 1
+      required:
+        - productId
+        - quantity
 
     ErrorResponse:
       type: object
